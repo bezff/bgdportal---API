@@ -2,6 +2,8 @@
 
 Открывай `API.html` в браузере, чтобы посмотреть все API методы проекта.
 
+https://bezff.github.io/bgdportal---API/API.html
+
 ## Что там внутри
 
 В документации описаны все эндпоинты с:
@@ -18,5 +20,6 @@
 - DELETE - красный
 
 Используй соответствующий класс: `method get`, `method post`, `method put`, `method delete`
+
 
 
