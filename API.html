@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - bgdportal.ru</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #e6edf3;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            color: #8b949e;
+            font-size: 16px;
+        }
+        
+        nav {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+        }
+        
+        nav h2 {
+            font-size: 14px;
+            color: #8b949e;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        nav ul {
+            list-style: none;
+        }
+        
+        nav li {
+            margin-bottom: 8px;
+        }
+        
+        nav a {
+            color: #58a6ff;
+            text-decoration: none;
+            padding: 5px 0;
+            display: block;
+        }
+        
+        nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .api-section {
+            margin-bottom: 40px;
+        }
+        
+        .api-endpoint {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .endpoint-header {
+            background-color: #0d1117;
+            border-bottom: 1px solid #30363d;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .method.get {
+            background-color: #1f6feb;
+            color: #e6edf3;
+        }
+        
+        .method.post {
+            background-color: #238636;
+            color: #e6edf3;
+        }
+        
+        .method.put {
+            background-color: #9e6a03;
+            color: #e6edf3;
+        }
+        
+        .method.delete {
+            background-color: #da3633;
+            color: #e6edf3;
+        }
+        
+        .endpoint-path {
+            color: #e6edf3;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            flex: 1;
+        }
+        
+        .endpoint-description {
+            color: #8b949e;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .endpoint-content {
+            padding: 20px;
+        }
+        
+        .content-section {
+            margin-bottom: 20px;
+        }
+        
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            color: #8b949e;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        
+        .parameter-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        .parameter-table thead {
+            border-top: 1px solid #30363d;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .parameter-table th {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .parameter-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .parameter-name {
+            color: #79c0ff;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+        
+        .parameter-type {
+            color: #79c0ff;
+            background-color: #0d1117;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+        
+        .code-block {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+            margin-top: 10px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .code-json {
+            color: #e6edf3;
+        }
+        
+        .json-key {
+            color: #79c0ff;
+        }
+        
+        .json-string {
+            color: #a371f7;
+        }
+        
+        .json-number {
+            color: #79c0ff;
+        }
+        
+        .json-boolean {
+            color: #ff7b72;
+        }
+        
+        .placeholder-content {
+            background-color: #0d1117;
+            border: 2px dashed #30363d;
+            border-radius: 6px;
+            padding: 40px;
+            text-align: center;
+            color: #8b949e;
+            margin: 30px 0;
+        }
+        
+        .placeholder-content h3 {
+            color: #c9d1d9;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .footer {
+            border-top: 1px solid #30363d;
+            margin-top: 40px;
+            padding-top: 20px;
+            text-align: center;
+            color: #8b949e;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>API Documentation</h1>
+            <p class="description">bgdportal.ru - городской портал</p>
+        </header>
+        
+        <nav>
+            <h2>API эндпоинты</h2>
+            <ul id="nav-list">
+                <li><em style="color: #6e7681;">Здесь будут перечислены все API методы</em></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <div class="placeholder-content">
+                <h3>📋 Документация API</h3>
+                <p>API методы и эндпоинты проекта bgdportal.ru</p>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Последнее обновление: 10 февраля 2026 г.</p>
+            <p>Версия документации: 1.0</p>
+        </footer>
+    </div>
+</body>
+</html>
