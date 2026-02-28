@@ -3,320 +3,843 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Documentation - bgdportal.ru</title>
+    <title>API — bgdportal.ru</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1a2233;
+            --bg-code: #0d1520;
+            --bg-nav: #131b2e;
+            --border: rgba(99, 130, 180, 0.12);
+            --border-hover: rgba(99, 130, 180, 0.25);
+            --text-primary: #e8ecf4;
+            --text-secondary: #8899b4;
+            --text-muted: #5d6f8a;
+            --accent-blue: #4f8ff7;
+            --accent-blue-soft: rgba(79, 143, 247, 0.1);
+            --accent-green: #34d399;
+            --accent-green-soft: rgba(52, 211, 153, 0.1);
+            --accent-orange: #f59e0b;
+            --accent-orange-soft: rgba(245, 158, 11, 0.1);
+            --accent-red: #ef4444;
+            --accent-red-soft: rgba(239, 68, 68, 0.1);
+            --accent-purple: #a78bfa;
+            --accent-purple-soft: rgba(167, 139, 250, 0.08);
+            --accent-cyan: #22d3ee;
+            --accent-teal: #2dd4bf;
+            --accent-teal-soft: rgba(45, 212, 191, 0.1);
+            --accent-pink: #f472b6;
+            --accent-pink-soft: rgba(244, 114, 182, 0.1);
+            --accent-yellow: #fbbf24;
+            --accent-yellow-soft: rgba(251, 191, 36, 0.1);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.25);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.35);
         }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background-color: #0d1117;
-            color: #c9d1d9;
-            line-height: 1.6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
         }
-        
-        header {
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+
+        /* ── Sidebar ── */
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            background: var(--bg-nav);
+            border-right: 1px solid var(--border);
+            padding: 0 0 32px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(99,130,180,0.15) transparent;
         }
-        
-        h1 {
-            color: #e6edf3;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-        
-        .description {
-            color: #8b949e;
-            font-size: 16px;
-        }
-        
-        nav {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 15px 20px;
-            margin-bottom: 30px;
-        }
-        
-        nav h2 {
-            font-size: 14px;
-            color: #8b949e;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        nav ul {
-            list-style: none;
-        }
-        
-        nav li {
-            margin-bottom: 8px;
-        }
-        
-        nav a {
-            color: #58a6ff;
-            text-decoration: none;
-            padding: 5px 0;
-            display: block;
-        }
-        
-        nav a:hover {
-            text-decoration: underline;
-        }
-        
-        .api-section {
-            margin-bottom: 40px;
-        }
-        
-        .api-endpoint {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(99,130,180,0.2); border-radius: 4px; }
+
+        .sidebar-brand {
+            padding: 20px 24px 20px;
+            border-bottom: 1px solid var(--border);
             margin-bottom: 20px;
-            overflow: hidden;
         }
-        
-        .endpoint-header {
-            background-color: #0d1117;
-            border-bottom: 1px solid #30363d;
-            padding: 15px 20px;
+        .sidebar-brand__logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .sidebar-brand__logo img {
+            height: 32px;
+            width: auto;
+            border-radius: 6px;
+        }
+        .sidebar-brand__text { display: flex; flex-direction: column; }
+        .sidebar-brand__name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.2; }
+        .sidebar-brand__sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        .sidebar-group { margin-bottom: 20px; }
+        .sidebar-group__title {
+            padding: 0 24px;
+            font-size: 10.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .sidebar-nav { list-style: none; }
+        .sidebar-nav__item a {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 7px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 450;
+            transition: all 0.15s ease;
+            border-left: 3px solid transparent;
         }
-        
-        .method {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 3px;
-            font-size: 12px;
+        .sidebar-nav__item a:hover {
+            color: var(--text-primary);
+            background: rgba(79,143,247,0.04);
+            border-left-color: rgba(79,143,247,0.2);
+        }
+        .sidebar-nav__item a.active {
+            color: var(--accent-blue);
+            background: var(--accent-blue-soft);
+            border-left-color: var(--accent-blue);
+        }
+        .sidebar-nav__method {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9.5px;
             font-weight: 600;
-            letter-spacing: 0.5px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
         }
-        
-        .method.get {
-            background-color: #1f6feb;
-            color: #e6edf3;
+        .sidebar-nav__method.get { background: var(--accent-blue-soft); color: var(--accent-blue); }
+
+        .sidebar-info {
+            margin: 20px 20px 0;
+            padding: 14px 16px;
+            background: var(--accent-purple-soft);
+            border: 1px solid rgba(167,139,250,0.12);
+            border-radius: var(--radius-md);
         }
-        
-        .method.post {
-            background-color: #238636;
-            color: #e6edf3;
+        .sidebar-info__title { font-size: 12px; font-weight: 600; color: var(--accent-purple); margin-bottom: 4px; }
+        .sidebar-info__text { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
+        .sidebar-info__text code {
+            background: rgba(167,139,250,0.12);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            color: var(--accent-purple);
         }
-        
-        .method.put {
-            background-color: #9e6a03;
-            color: #e6edf3;
-        }
-        
-        .method.delete {
-            background-color: #da3633;
-            color: #e6edf3;
-        }
-        
-        .endpoint-path {
-            color: #e6edf3;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-            font-size: 14px;
-            flex: 1;
-        }
-        
-        .endpoint-description {
-            color: #8b949e;
+
+        /* ── Content ── */
+        .content { padding: 40px 56px 80px; max-width: 920px; }
+
+        .content-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+        .content-header__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: var(--accent-blue-soft);
+            border: 1px solid rgba(79,143,247,0.15);
+            border-radius: 20px;
             font-size: 12px;
-            margin-top: 5px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
         }
-        
-        .endpoint-content {
-            padding: 20px;
+        .content-header__title {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        
-        .content-section {
+        .content-header__desc { font-size: 15px; color: var(--text-secondary); line-height: 1.6; max-width: 580px; }
+        .content-header__meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; }
+        .content-header__meta-item { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-muted); }
+        .content-header__meta-item i { font-size: 14px; }
+
+        /* ── Info Blocks ── */
+        .info-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
             margin-bottom: 20px;
         }
-        
-        .content-section:last-child {
-            margin-bottom: 0;
+        .info-block__title {
+            font-size: 15px; font-weight: 600;
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 14px;
         }
-        
-        .section-title {
-            color: #8b949e;
+        .info-block__title i { font-size: 16px; color: var(--accent-blue); }
+        .info-block__text { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; }
+        .info-block__text code {
+            background: rgba(79,143,247,0.08);
+            padding: 1.5px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
+            color: var(--accent-cyan);
+        }
+        .info-block__text a { color: var(--accent-blue); text-decoration: none; }
+        .info-block__text a:hover { text-decoration: underline; }
+        .info-block__list { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .info-block__list li {
+            font-size: 13px; color: var(--text-secondary);
+            padding-left: 18px; position: relative;
+        }
+        .info-block__list li:before {
+            content: '';
+            position: absolute; left: 0; top: 7px;
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--accent-blue); opacity: 0.5;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px; margin-top: 14px;
+        }
+        .info-grid__item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+        }
+        .info-grid__label { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 4px; }
+        .info-grid__value { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+        .info-grid__value code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent-cyan);
+        }
+
+        /* ── Sections ── */
+        .api-section { margin-bottom: 52px; }
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-heading__icon {
+            width: 32px; height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px;
+        }
+        .section-heading__icon--intro { background: var(--accent-teal-soft); color: var(--accent-teal); }
+        .section-heading__icon--search { background: var(--accent-blue-soft); color: var(--accent-blue); }
+        .section-heading__icon--news { background: var(--accent-green-soft); color: var(--accent-green); }
+        .section-heading__icon--horoscope { background: var(--accent-purple-soft); color: var(--accent-purple); }
+        .section-heading__icon--listings { background: var(--accent-orange-soft); color: var(--accent-orange); }
+        .section-heading__icon--chat { background: var(--accent-pink-soft); color: var(--accent-pink); }
+        .section-heading__title { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; }
+        .section-heading__count {
+            font-size: 11px; font-weight: 600;
+            padding: 3px 8px; border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        /* ── Endpoint Card ── */
+        .endpoint {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .endpoint:hover { border-color: var(--border-hover); box-shadow: var(--shadow-md); }
+
+        .endpoint__head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.01);
+        }
+        .endpoint__method {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; font-weight: 600;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
             letter-spacing: 0.5px;
-            margin-bottom: 10px;
+            flex-shrink: 0;
         }
-        
-        .parameter-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
+        .endpoint__method.get { background: var(--accent-blue-soft); color: var(--accent-blue); border: 1px solid rgba(79,143,247,0.15); }
+
+        .endpoint__path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13.5px; font-weight: 500;
+            color: var(--text-primary); flex: 1;
+            min-width: 0;
         }
-        
-        .parameter-table thead {
-            border-top: 1px solid #30363d;
-            border-bottom: 1px solid #30363d;
+        .endpoint__path-param { color: var(--accent-orange); }
+        .endpoint__auth {
+            font-size: 10px; font-weight: 600;
+            padding: 3px 8px; border-radius: 10px;
+            background: var(--accent-yellow-soft);
+            color: var(--accent-yellow);
+            letter-spacing: 0.3px;
+            display: inline-flex; align-items: center; gap: 4px;
+            flex-shrink: 0;
         }
-        
-        .parameter-table th {
-            background-color: #0d1117;
-            color: #c9d1d9;
-            padding: 8px 10px;
-            text-align: left;
-            font-weight: 600;
+        .endpoint__body { padding: 22px; }
+        .endpoint__desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 22px; }
+
+        .block { margin-bottom: 22px; }
+        .block:last-child { margin-bottom: 0; }
+        .block__title {
+            font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-muted); margin-bottom: 10px;
+            display: flex; align-items: center; gap: 6px;
         }
-        
-        .parameter-table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #30363d;
+        .block__title i { font-size: 13px; }
+
+        /* ── Tables ── */
+        .param-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .param-table th {
+            text-align: left; padding: 9px 14px;
+            font-size: 10.5px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
         }
-        
-        .parameter-name {
-            color: #79c0ff;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        .param-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
         }
-        
-        .parameter-type {
-            color: #79c0ff;
-            background-color: #0d1117;
-            padding: 2px 6px;
+        .param-table tbody tr:last-child td { border-bottom: none; }
+        .param-table tbody tr:hover { background: rgba(79,143,247,0.02); }
+        .param-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px; font-weight: 500;
+            color: var(--accent-cyan);
+        }
+        .param-type {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px; font-weight: 500;
+            padding: 2px 7px; border-radius: 4px;
+            background: var(--accent-purple-soft);
+            color: var(--accent-purple);
+        }
+        .param-required {
+            font-size: 10px; font-weight: 600;
+            color: var(--accent-red); margin-left: 4px;
+        }
+        .param-default {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; color: var(--text-muted);
+            background: rgba(255,255,255,0.03);
+            padding: 1px 5px; border-radius: 3px;
+        }
+        .param-desc { color: var(--text-secondary); }
+
+        /* ── Code Blocks ── */
+        .code {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .code__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 16px;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+        }
+        .code__label {
+            font-size: 10.5px; font-weight: 600;
+            color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .code__status {
+            font-size: 10.5px; font-weight: 600;
+            padding: 2px 8px; border-radius: 10px;
+        }
+        .code__status--ok { background: var(--accent-green-soft); color: var(--accent-green); }
+        .code__status--err { background: var(--accent-red-soft); color: var(--accent-red); }
+        .code__status--warn { background: var(--accent-orange-soft); color: var(--accent-orange); }
+        .code__body {
+            padding: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .code__body pre { white-space: pre; }
+        .json-key { color: var(--accent-cyan); }
+        .json-string { color: var(--accent-purple); }
+        .json-number { color: var(--accent-orange); }
+        .json-boolean { color: var(--accent-red); }
+        .json-null { color: var(--text-muted); }
+        .json-comment { color: var(--text-muted); font-style: italic; }
+
+        /* ── Notes ── */
+        .notes {
+            background: rgba(79,143,247,0.04);
+            border: 1px solid rgba(79,143,247,0.1);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+        }
+        .notes--warn {
+            background: rgba(245,158,11,0.04);
+            border-color: rgba(245,158,11,0.12);
+        }
+        .notes--success {
+            background: rgba(52,211,153,0.04);
+            border-color: rgba(52,211,153,0.12);
+        }
+        .notes ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .notes li {
+            font-size: 12.5px; color: var(--text-secondary);
+            padding-left: 18px; position: relative;
+        }
+        .notes li:before {
+            content: '';
+            position: absolute; left: 0; top: 7px;
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--accent-blue); opacity: 0.5;
+        }
+        .notes--warn li:before { background: var(--accent-orange); }
+        .notes--success li:before { background: var(--accent-green); }
+        .notes code {
+            background: rgba(79,143,247,0.08);
+            padding: 1px 5px;
             border-radius: 3px;
-            font-size: 12px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--accent-blue);
         }
-        
-        .code-block {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 16px;
+
+        .values-list {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;
+        }
+        .values-list__item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; padding: 3px 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 4px; color: var(--text-secondary);
+        }
+
+        /* ── Curl Example ── */
+        .curl-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
             overflow-x: auto;
             margin-top: 10px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-            font-size: 13px;
-            line-height: 1.5;
         }
-        
-        .code-json {
-            color: #e6edf3;
+        .curl-block .curl-cmd { color: var(--accent-green); }
+        .curl-block .curl-url { color: var(--accent-purple); }
+
+        /* ── Footer ── */
+        .doc-footer {
+            margin-top: 56px; padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
         }
-        
-        .json-key {
-            color: #79c0ff;
+        .doc-footer__text { font-size: 12px; color: var(--text-muted); }
+        .doc-footer__brand {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 12px; color: var(--text-muted); text-decoration: none;
         }
-        
-        .json-string {
-            color: #a371f7;
+        .doc-footer__brand:hover { color: var(--text-secondary); }
+
+        /* ── Mobile ── */
+        @media (max-width: 980px) {
+            .layout { grid-template-columns: 1fr; overflow-x: hidden; }
+            .sidebar {
+                position: fixed; top: 0; left: -300px;
+                width: 280px; z-index: 100;
+                transition: left 0.3s ease;
+                box-shadow: var(--shadow-lg);
+            }
+            .sidebar.open { left: 0; }
+            .sidebar-overlay {
+                display: none; position: fixed; inset: 0;
+                background: rgba(0,0,0,0.5); z-index: 99;
+            }
+            .sidebar-overlay.open { display: block; }
+            .mobile-bar {
+                display: flex; position: sticky; top: 0; z-index: 50;
+                background: var(--bg-nav);
+                border-bottom: 1px solid var(--border);
+                padding: 12px 20px;
+                align-items: center; gap: 12px;
+            }
+            .mobile-bar__btn {
+                background: none; border: 1px solid var(--border);
+                border-radius: var(--radius-sm);
+                padding: 6px 8px; color: var(--text-primary);
+                cursor: pointer; font-size: 18px;
+            }
+            .mobile-bar__title { font-size: 14px; font-weight: 600; }
+            .content { padding: 24px 16px 60px; max-width: 100vw; overflow-x: hidden; }
+            .endpoint { max-width: 100%; overflow: hidden; }
+            .endpoint__body { padding: 16px; overflow: hidden; }
+            .endpoint__head { padding: 12px 16px; }
+            .endpoint__path { font-size: 11.5px; word-break: break-all; }
+            .code { max-width: 100%; }
+            .code__body { padding: 12px; font-size: 11px; }
+            .code__body pre { white-space: pre; }
+            .param-table { display: block; overflow-x: auto; }
+            .notes { padding: 12px 14px; }
+            .info-grid { grid-template-columns: 1fr; }
         }
-        
-        .json-number {
-            color: #79c0ff;
+        @media (min-width: 981px) {
+            .mobile-bar { display: none; }
+            .sidebar-overlay { display: none !important; }
         }
-        
-        .json-boolean {
-            color: #ff7b72;
-        }
-        
-        .placeholder-content {
-            background-color: #0d1117;
-            border: 2px dashed #30363d;
-            border-radius: 6px;
-            padding: 40px;
-            text-align: center;
-            color: #8b949e;
-            margin: 30px 0;
-        }
-        
-        .placeholder-content h3 {
-            color: #c9d1d9;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        
-        .footer {
-            border-top: 1px solid #30363d;
-            margin-top: 40px;
-            padding-top: 20px;
-            text-align: center;
-            color: #8b949e;
-            font-size: 12px;
+        @media (max-width: 600px) {
+            .content-header__title { font-size: 24px; }
+            .content-header__meta { flex-direction: column; gap: 8px; }
+            .endpoint__head { flex-wrap: wrap; gap: 8px; }
+            .endpoint__path { font-size: 10.5px; }
+            .param-table { font-size: 11px; }
+            .param-table th { padding: 7px 10px; }
+            .param-table td { padding: 8px 10px; }
+            .values-list__item { font-size: 10px; padding: 2px 6px; }
+            .doc-footer { flex-direction: column; gap: 8px; text-align: center; }
+            .curl-block { font-size: 10.5px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>API Documentation</h1>
-            <p class="description">bgdportal.ru - городской портал</p>
-        </header>
-        
-        <nav>
-            <h2>API эндпоинты</h2>
-            <ul id="nav-list">
-                <li><a href="#search">GET /api/search</a> - Глобальный поиск</li>
-                <li><a href="#news-list">GET /api/news</a> - Список новостей</li>
-                <li><a href="#news-latest">GET /api/news/latest</a> - Последние новости</li>
-                <li><a href="#news-featured">GET /api/news/featured</a> - Важные новости</li>
-                <li><a href="#news-categories">GET /api/news/categories</a> - Категории</li>
-                <li><a href="#news-by-slug">GET /api/news/slug/{slug}</a> - Новость по slug</li>
-                <li><a href="#news-by-id">GET /api/news/{id}</a> - Новость по ID</li>
-            </ul>
-        </nav>
-        
-        <main>
-            <section class="api-section">
-                <h2 style="color: #e6edf3; margin-bottom: 20px; font-size: 24px;">� Поиск</h2>
-                
-                <!-- GET /api/search -->
-                <div class="api-endpoint" id="search">
-                    <div class="endpoint-header">
-                        <span class="method get">GET</span>
-                        <span class="endpoint-path">/api/search</span>
+    <header class="mobile-bar">
+        <button class="mobile-bar__btn" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+        <span class="mobile-bar__title">API Documentation</span>
+    </header>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <a href="/" class="sidebar-brand__logo">
+                    <img src="/images/logo.png" alt="bgdportal">
+                    <div class="sidebar-brand__text">
+                        <span class="sidebar-brand__name">bgdportal API</span>
+                        <span class="sidebar-brand__sub">v1.3 &middot; Февраль 2026</span>
                     </div>
-                    <div class="endpoint-content">
-                        <p class="endpoint-description">Глобальный поиск по порталу. Ищет по новостям, событиям, организациям, объявлениям, вакансиям и героям.</p>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Параметры запроса</h4>
-                            <table class="parameter-table">
-                                <thead>
-                                    <tr>
-                                        <th>Параметр</th>
-                                        <th>Тип</th>
-                                        <th>Описание</th>
-                                    </tr>
-                                </thead>
+                </a>
+            </div>
+
+            <div class="sidebar-group">
+                <div class="sidebar-group__title">Введение</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav__item"><a href="#overview">Обзор API</a></li>
+                    <li class="sidebar-nav__item"><a href="#authentication">Аутентификация</a></li>
+                    <li class="sidebar-nav__item"><a href="#errors">Ошибки</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-group">
+                <div class="sidebar-group__title">Поиск</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav__item"><a href="#search"><span class="sidebar-nav__method get">GET</span> /api/search</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-group">
+                <div class="sidebar-group__title">Новости</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav__item"><a href="#news-list"><span class="sidebar-nav__method get">GET</span> /api/news</a></li>
+                    <li class="sidebar-nav__item"><a href="#news-latest"><span class="sidebar-nav__method get">GET</span> /api/news/latest</a></li>
+                    <li class="sidebar-nav__item"><a href="#news-featured"><span class="sidebar-nav__method get">GET</span> /api/news/featured</a></li>
+                    <li class="sidebar-nav__item"><a href="#news-categories"><span class="sidebar-nav__method get">GET</span> /api/news/categories</a></li>
+                    <li class="sidebar-nav__item"><a href="#news-slug"><span class="sidebar-nav__method get">GET</span> /api/news/slug/{slug}</a></li>
+                    <li class="sidebar-nav__item"><a href="#news-id"><span class="sidebar-nav__method get">GET</span> /api/news/{id}</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-group">
+                <div class="sidebar-group__title">Гороскоп</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav__item"><a href="#horoscope"><span class="sidebar-nav__method get">GET</span> /api/horoscope/{sign}</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-group">
+                <div class="sidebar-group__title">Объявления</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav__item"><a href="#subcategories"><span class="sidebar-nav__method get">GET</span> /api/subcategories/{id}</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-group">
+                <div class="sidebar-group__title">Чаты</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav__item"><a href="#chats-unread"><span class="sidebar-nav__method get">GET</span> /api/chats/unread</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-info">
+                <div class="sidebar-info__title">Формат ответов</div>
+                <div class="sidebar-info__text">Все ответы в формате <code>JSON</code> (UTF-8). CORS включён для всех источников. Только <code>GET</code> запросы.</div>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div class="content-header">
+                <div class="content-header__badge"><i class="bi bi-lightning-charge"></i> REST API</div>
+                <h1 class="content-header__title">API Документация</h1>
+                <p class="content-header__desc">Публичное API городского портала bgdportal.ru для интеграции с внешними сервисами и приложениями. Все эндпоинты доступны без ключа, возвращают JSON.</p>
+                <div class="content-header__meta">
+                    <span class="content-header__meta-item"><i class="bi bi-globe2"></i> bgdportal.ru/api</span>
+                    <span class="content-header__meta-item"><i class="bi bi-calendar3"></i> 28.02.2026</span>
+                    <span class="content-header__meta-item"><i class="bi bi-braces"></i> JSON (UTF-8)</span>
+                    <span class="content-header__meta-item"><i class="bi bi-collection"></i> 10 эндпоинтов</span>
+                    <span class="content-header__meta-item"><i class="bi bi-shield-check"></i> CORS: *</span>
+                </div>
+            </div>
+
+            <!-- ════════════════ ОБЗОР ════════════════ -->
+            <section class="api-section" id="overview">
+                <div class="section-heading">
+                    <div class="section-heading__icon section-heading__icon--intro"><i class="bi bi-book"></i></div>
+                    <h2 class="section-heading__title">Обзор API</h2>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-block__title"><i class="bi bi-info-circle"></i> Основная информация</div>
+                    <div class="info-block__text">
+                        API bgdportal.ru предоставляет программный доступ к данным городского портала Богдановича. Все эндпоинты работают через протокол HTTP и возвращают данные в формате <code>JSON</code> с кодировкой UTF-8.
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-grid__item">
+                            <div class="info-grid__label">Базовый URL</div>
+                            <div class="info-grid__value"><code>https://bgdportal.ru/api</code></div>
+                        </div>
+                        <div class="info-grid__item">
+                            <div class="info-grid__label">Протокол</div>
+                            <div class="info-grid__value">HTTPS / HTTP</div>
+                        </div>
+                        <div class="info-grid__item">
+                            <div class="info-grid__label">Методы</div>
+                            <div class="info-grid__value">Только <code>GET</code></div>
+                        </div>
+                        <div class="info-grid__item">
+                            <div class="info-grid__label">Формат ответа</div>
+                            <div class="info-grid__value"><code>application/json; charset=utf-8</code></div>
+                        </div>
+                        <div class="info-grid__item">
+                            <div class="info-grid__label">CORS</div>
+                            <div class="info-grid__value"><code>Access-Control-Allow-Origin: *</code></div>
+                        </div>
+                        <div class="info-grid__item">
+                            <div class="info-grid__label">Аутентификация</div>
+                            <div class="info-grid__value">Не требуется (кроме чатов)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-block__title"><i class="bi bi-terminal"></i> Быстрый старт</div>
+                    <div class="info-block__text">Пример запроса к API с помощью <code>curl</code>:</div>
+                    <div class="curl-block">
+                        <span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news/latest?limit=3"</span>
+                    </div>
+                    <div class="info-block__text" style="margin-top: 14px;">JavaScript (<code>fetch</code>):</div>
+                    <div class="curl-block">
+const res = await fetch('/api/news/latest?limit=3');
+const { success, data } = await res.json();
+console.log(data); // массив новостей
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-block__title"><i class="bi bi-check-circle"></i> Формат успешного ответа</div>
+                    <div class="info-block__text">Все успешные ответы API содержат поле <code>success: true</code> и данные в поле <code>data</code>.</div>
+                    <div class="code" style="margin-top: 12px;">
+                        <div class="code__header"><span class="code__label">Формат</span><span class="code__status code__status--ok">200 OK</span></div>
+                        <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"data"</span>: { ... }  <span class="json-comment">// объект или массив</span>
+}</pre></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════════ АУТЕНТИФИКАЦИЯ ════════════════ -->
+            <section class="api-section" id="authentication">
+                <div class="section-heading">
+                    <div class="section-heading__icon section-heading__icon--intro"><i class="bi bi-shield-lock"></i></div>
+                    <h2 class="section-heading__title">Аутентификация</h2>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-block__title"><i class="bi bi-unlock"></i> Публичные эндпоинты</div>
+                    <div class="info-block__text">
+                        Большинство API-эндпоинтов полностью публичные и не требуют аутентификации. К ним можно обращаться из любого клиента — браузера, мобильного приложения, серверного скрипта.
+                    </div>
+                    <ul class="info-block__list">
+                        <li><code>/api/search</code> — глобальный поиск</li>
+                        <li><code>/api/news/*</code> — все эндпоинты новостей</li>
+                        <li><code>/api/horoscope/{sign}</code> — гороскоп</li>
+                        <li><code>/api/subcategories/{id}</code> — подкатегории</li>
+                    </ul>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-block__title"><i class="bi bi-lock"></i> Защищённые эндпоинты</div>
+                    <div class="info-block__text">
+                        Эндпоинт <code>/api/chats/unread</code> возвращает данные только для авторизованных пользователей. Аутентификация выполняется через сессионный cookie (<code>PHPSESSID</code>), который устанавливается при входе на сайт. Без активной сессии эндпоинт вернёт <code>count: 0</code>.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════════ ОШИБКИ ════════════════ -->
+            <section class="api-section" id="errors">
+                <div class="section-heading">
+                    <div class="section-heading__icon section-heading__icon--intro"><i class="bi bi-exclamation-triangle"></i></div>
+                    <h2 class="section-heading__title">Обработка ошибок</h2>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-block__title"><i class="bi bi-x-circle"></i> Формат ошибки</div>
+                    <div class="info-block__text">При ошибке API возвращает соответствующий HTTP-код и JSON-объект с описанием:</div>
+                    <div class="code" style="margin-top: 12px;">
+                        <div class="code__header"><span class="code__label">Error Response</span><span class="code__status code__status--err">4xx / 5xx</span></div>
+                        <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">false</span>,
+  <span class="json-key">"error"</span>: {
+    <span class="json-key">"code"</span>: <span class="json-number">404</span>,
+    <span class="json-key">"message"</span>: <span class="json-string">"Новость не найдена"</span>
+  }
+}</pre></div>
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-block__title"><i class="bi bi-list-ol"></i> Коды ответов</div>
+                    <table class="param-table" style="margin-top: 10px;">
+                        <thead><tr><th>Код</th><th>Статус</th><th>Описание</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="param-name">200</span></td><td><span style="color:var(--accent-green);">OK</span></td><td class="param-desc">Успешный запрос, данные в поле <code>data</code></td></tr>
+                            <tr><td><span class="param-name">400</span></td><td><span style="color:var(--accent-orange);">Bad Request</span></td><td class="param-desc">Некорректные параметры запроса (напр. невалидная категория)</td></tr>
+                            <tr><td><span class="param-name">404</span></td><td><span style="color:var(--accent-red);">Not Found</span></td><td class="param-desc">Ресурс не найден (новость, знак зодиака и т.д.)</td></tr>
+                            <tr><td><span class="param-name">500</span></td><td><span style="color:var(--accent-red);">Server Error</span></td><td class="param-desc">Внутренняя ошибка сервера</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ════════════════ ПОИСК ════════════════ -->
+            <section class="api-section">
+                <div class="section-heading">
+                    <div class="section-heading__icon section-heading__icon--search"><i class="bi bi-search"></i></div>
+                    <h2 class="section-heading__title">Поиск</h2>
+                    <span class="section-heading__count">1 эндпоинт</span>
+                </div>
+
+                <div class="endpoint" id="search">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/search</span>
+                    </div>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Глобальный поиск по порталу с нечётким совпадением. Ищет по 7 разделам: новости, события (афиша), организации, объявления, вакансии, пользователи и герои. Поддерживает поиск с опечатками и автоматическую коррекцию раскладки клавиатуры (EN→RU).</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-sliders"></i> Параметры запроса</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
                                 <tbody>
                                     <tr>
-                                        <td><span class="parameter-name">q</span></td>
-                                        <td><span class="parameter-type">string</span></td>
-                                        <td>Поисковый запрос (минимум 2 символа)</td>
+                                        <td><span class="param-name">q</span> <span class="param-required">*</span></td>
+                                        <td><span class="param-type">string</span></td>
+                                        <td class="param-desc">Поисковый запрос (минимум 2 символа). Если короче — возвращается пустой результат</td>
                                     </tr>
                                     <tr>
-                                        <td><span class="parameter-name">limit</span></td>
-                                        <td><span class="parameter-type">integer</span></td>
-                                        <td>Количество результатов на группу, 1-5 (по умолчанию: 3)</td>
+                                        <td><span class="param-name">limit</span></td>
+                                        <td><span class="param-type">integer</span></td>
+                                        <td class="param-desc">Максимум результатов в каждой группе: 1–5. По умолчанию: <span class="param-default">3</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 200</h4>
-                            <div class="code-block code-json"><pre>{
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-layers"></i> Группы результатов</div>
+                            <table class="param-table">
+                                <thead><tr><th>Ключ</th><th>Раздел</th><th>Что ищет</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">news</span></td><td>Новости</td><td class="param-desc">Заголовок опубликованных новостей, мета — категория</td></tr>
+                                    <tr><td><span class="param-name">events</span></td><td>Афиша</td><td class="param-desc">Название событий, мета — дата + категория</td></tr>
+                                    <tr><td><span class="param-name">organizations</span></td><td>Организации</td><td class="param-desc">Название организаций, мета — категория бизнеса</td></tr>
+                                    <tr><td><span class="param-name">listings</span></td><td>Объявления</td><td class="param-desc">Заголовок объявлений, мета — цена (формат: число ₽ / Бесплатно / Договорная)</td></tr>
+                                    <tr><td><span class="param-name">vacancies</span></td><td>Вакансии</td><td class="param-desc">Название вакансий, мета — компания + зарплата</td></tr>
+                                    <tr><td><span class="param-name">users</span></td><td>Люди</td><td class="param-desc">Имя, фамилия или username, мета — @username</td></tr>
+                                    <tr><td><span class="param-name">heroes</span></td><td>Наши герои</td><td class="param-desc">ФИО героев, мета — воинское звание</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Пример запроса</div>
+                            <div class="curl-block">
+                                <span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/search?q=парк&limit=2"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Пример ответа</div>
+                            <div class="code">
+                                <div class="code__header">
+                                    <span class="code__label">Response</span>
+                                    <span class="code__status code__status--ok">200 OK</span>
+                                </div>
+                                <div class="code__body"><pre>{
   <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
   <span class="json-key">"data"</span>: {
     <span class="json-key">"results"</span>: {
@@ -325,413 +848,821 @@
         <span class="json-key">"icon"</span>: <span class="json-string">"bi-newspaper"</span>,
         <span class="json-key">"items"</span>: [
           {
-            <span class="json-key">"title"</span>: <span class="json-string">"Название новости"</span>,
-            <span class="json-key">"url"</span>: <span class="json-string">"/news/slug"</span>,
-            <span class="json-key">"image"</span>: <span class="json-string">"/uploads/news/image.jpg"</span>,
+            <span class="json-key">"title"</span>: <span class="json-string">"Открытие нового парка в центре"</span>,
+            <span class="json-key">"url"</span>: <span class="json-string">"/news/otkrytie-novogo-parka"</span>,
+            <span class="json-key">"image"</span>: <span class="json-string">"/uploads/news/park.jpg"</span>,
             <span class="json-key">"meta"</span>: <span class="json-string">"Город"</span>
           }
         ],
-        <span class="json-key">"more_url"</span>: <span class="json-string">"/news?search=запрос"</span>
+        <span class="json-key">"more_url"</span>: <span class="json-string">"/news?search=парк"</span>
       },
-      <span class="json-key">"events"</span>: { <span class="json-string">"...аналогично..."</span> },
-      <span class="json-key">"organizations"</span>: { <span class="json-string">"...аналогично..."</span> },
-      <span class="json-key">"listings"</span>: { <span class="json-string">"...аналогично..."</span> },
-      <span class="json-key">"vacancies"</span>: { <span class="json-string">"...аналогично..."</span> },
-      <span class="json-key">"heroes"</span>: { <span class="json-string">"...аналогично..."</span> }
+      <span class="json-key">"events"</span>: {
+        <span class="json-key">"label"</span>: <span class="json-string">"Афиша"</span>,
+        <span class="json-key">"icon"</span>: <span class="json-string">"bi-calendar-event"</span>,
+        <span class="json-key">"items"</span>: [
+          {
+            <span class="json-key">"title"</span>: <span class="json-string">"Фестиваль в парке"</span>,
+            <span class="json-key">"url"</span>: <span class="json-string">"/events/festival-v-parke"</span>,
+            <span class="json-key">"image"</span>: <span class="json-string">"/uploads/events/fest.jpg"</span>,
+            <span class="json-key">"meta"</span>: <span class="json-string">"15.03.2026 · Фестивали"</span>
+          }
+        ],
+        <span class="json-key">"more_url"</span>: <span class="json-string">"/events?search=парк"</span>
+      }
     },
-    <span class="json-key">"total"</span>: <span class="json-number">12</span>,
-    <span class="json-key">"query"</span>: <span class="json-string">"запрос"</span>
+    <span class="json-key">"total"</span>: <span class="json-number">2</span>,
+    <span class="json-key">"query"</span>: <span class="json-string">"парк"</span>
   }
 }</pre></div>
+                            </div>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Примечания</h4>
-                            <ul style="margin-left: 20px; color: #8b949e;">
-                                <li>Группы включаются в ответ только при наличии совпадений</li>
-                                <li>При запросе короче 2 символов возвращается пустой результат</li>
-                                <li>Поиск ведётся только по опубликованным/активным записям</li>
-                            </ul>
+
+                        <div class="block">
+                            <div class="notes">
+                                <ul>
+                                    <li>Группы включаются в ответ <strong>только</strong> при наличии совпадений</li>
+                                    <li>Каждая группа: <code>label</code> (название), <code>icon</code> (Bootstrap Icon), <code>items[]</code>, <code>more_url</code> (ссылка «Ещё»)</li>
+                                    <li><code>total</code> — общее кол-во найденных элементов по всем группам</li>
+                                    <li>Поиск автоматически исправляет раскладку: <code>ghj</code> → <code>про</code></li>
+                                    <li>Нечёткий поиск: обрезает окончания для совпадения с опечатками</li>
+                                    <li>Ищет только по опубликованным / активным записям</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-            
+
+            <!-- ════════════════ НОВОСТИ ════════════════ -->
             <section class="api-section">
-                <h2 style="color: #e6edf3; margin-bottom: 20px; font-size: 24px;">�📰 Новости</h2>
-                
+                <div class="section-heading">
+                    <div class="section-heading__icon section-heading__icon--news"><i class="bi bi-newspaper"></i></div>
+                    <h2 class="section-heading__title">Новости</h2>
+                    <span class="section-heading__count">6 эндпоинтов</span>
+                </div>
+
                 <!-- GET /api/news -->
-                <div class="api-endpoint" id="news-list">
-                    <div class="endpoint-header">
-                        <span class="method get">GET</span>
-                        <span class="endpoint-path">/api/news</span>
+                <div class="endpoint" id="news-list">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/news</span>
                     </div>
-                    <div class="endpoint-content">
-                        <p class="endpoint-description">Получить список опубликованных новостей с пагинацией и фильтрацией.</p>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Параметры запроса</h4>
-                            <table class="parameter-table">
-                                <thead>
-                                    <tr>
-                                        <th>Параметр</th>
-                                        <th>Тип</th>
-                                        <th>Описание</th>
-                                    </tr>
-                                </thead>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Список опубликованных новостей с пагинацией, фильтрацией по категории и полнотекстовым поиском. Сортировка по дате публикации (новые первыми). Категория валидируется по справочнику — если передана несуществующая, вернётся ошибка <code>400</code>.</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-sliders"></i> Параметры запроса (Query String)</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
                                 <tbody>
-                                    <tr>
-                                        <td><span class="parameter-name">page</span></td>
-                                        <td><span class="parameter-type">integer</span></td>
-                                        <td>Номер страницы (по умолчанию: 1)</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="parameter-name">limit</span></td>
-                                        <td><span class="parameter-type">integer</span></td>
-                                        <td>Количество на странице, 1-50 (по умолчанию: 20)</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="parameter-name">category</span></td>
-                                        <td><span class="parameter-type">string</span></td>
-                                        <td>Фильтр по категории (см. /api/news/categories)</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="parameter-name">search</span></td>
-                                        <td><span class="parameter-type">string</span></td>
-                                        <td>Поиск по заголовку и содержимому</td>
-                                    </tr>
+                                    <tr><td><span class="param-name">page</span></td><td><span class="param-type">integer</span></td><td class="param-desc">Номер страницы, ≥ 1. По умолчанию: <span class="param-default">1</span></td></tr>
+                                    <tr><td><span class="param-name">limit</span></td><td><span class="param-type">integer</span></td><td class="param-desc">Элементов на странице: 1–50. По умолчанию: <span class="param-default">20</span></td></tr>
+                                    <tr><td><span class="param-name">category</span></td><td><span class="param-type">string</span></td><td class="param-desc">Фильтр по категории (ключ). Допустимые значения — см. <a href="#news-categories" style="color:var(--accent-blue)">/api/news/categories</a></td></tr>
+                                    <tr><td><span class="param-name">search</span></td><td><span class="param-type">string</span></td><td class="param-desc">Полнотекстовый поиск по заголовку и содержимому</td></tr>
                                 </tbody>
                             </table>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 200</h4>
-                            <div class="code-block code-json"><pre>{
-  "<span class="json-key">success</span>": <span class="json-boolean">true</span>,
-  "<span class="json-key">data</span>": {
-    "<span class="json-key">items</span>": [
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Примеры запросов</div>
+                            <div class="curl-block">
+<span class="json-comment"># Все новости (первая страница)</span>
+<span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news"</span>
+
+<span class="json-comment"># Новости спорта, 2-я страница, по 10 штук</span>
+<span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news?category=sport&page=2&limit=10"</span>
+
+<span class="json-comment"># Поиск по тексту</span>
+<span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news?search=школа"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Пример ответа</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"items"</span>: [
       {
-        "<span class="json-key">id</span>": <span class="json-number">1</span>,
-        "<span class="json-key">title</span>": <span class="json-string">"Заголовок новости"</span>,
-        "<span class="json-key">slug</span>": <span class="json-string">"zagolovok-novosti"</span>,
-        "<span class="json-key">excerpt</span>": <span class="json-string">"Краткое описание..."</span>,
-        "<span class="json-key">category</span>": {
-          "<span class="json-key">key</span>": <span class="json-string">"city"</span>,
-          "<span class="json-key">name</span>": <span class="json-string">"Город"</span>
+        <span class="json-key">"id"</span>: <span class="json-number">42</span>,
+        <span class="json-key">"title"</span>: <span class="json-string">"Открытие нового парка в Богдановиче"</span>,
+        <span class="json-key">"slug"</span>: <span class="json-string">"otkrytie-novogo-parka"</span>,
+        <span class="json-key">"excerpt"</span>: <span class="json-string">"В центре города открылся современный парк..."</span>,
+        <span class="json-key">"category"</span>: {
+          <span class="json-key">"key"</span>: <span class="json-string">"city"</span>,
+          <span class="json-key">"name"</span>: <span class="json-string">"Город"</span>
         },
-        "<span class="json-key">image</span>": <span class="json-string">"https://bgdportal.ru/uploads/news/image.jpg"</span>,
-        "<span class="json-key">is_featured</span>": <span class="json-boolean">false</span>,
-        "<span class="json-key">views</span>": <span class="json-number">150</span>,
-        "<span class="json-key">published_at</span>": <span class="json-string">"2026-02-13 12:00:00"</span>,
-        "<span class="json-key">url</span>": <span class="json-string">"https://bgdportal.ru/news/zagolovok-novosti"</span>,
-        "<span class="json-key">author</span>": {
-          "<span class="json-key">username</span>": <span class="json-string">"admin"</span>,
-          "<span class="json-key">name</span>": <span class="json-string">"Иван Петров"</span>
+        <span class="json-key">"image"</span>: <span class="json-string">"https://bgdportal.ru/uploads/news/park.jpg"</span>,
+        <span class="json-key">"is_featured"</span>: <span class="json-boolean">false</span>,
+        <span class="json-key">"views"</span>: <span class="json-number">342</span>,
+        <span class="json-key">"published_at"</span>: <span class="json-string">"2026-02-28 10:00:00"</span>,
+        <span class="json-key">"url"</span>: <span class="json-string">"https://bgdportal.ru/news/otkrytie-novogo-parka"</span>,
+        <span class="json-key">"author"</span>: {
+          <span class="json-key">"username"</span>: <span class="json-string">"admin"</span>,
+          <span class="json-key">"name"</span>: <span class="json-string">"Иван Петров"</span>
         }
       }
     ],
-    "<span class="json-key">pagination</span>": {
-      "<span class="json-key">current_page</span>": <span class="json-number">1</span>,
-      "<span class="json-key">per_page</span>": <span class="json-number">20</span>,
-      "<span class="json-key">total_items</span>": <span class="json-number">45</span>,
-      "<span class="json-key">total_pages</span>": <span class="json-number">3</span>,
-      "<span class="json-key">has_next</span>": <span class="json-boolean">true</span>,
-      "<span class="json-key">has_prev</span>": <span class="json-boolean">false</span>
+    <span class="json-key">"pagination"</span>: {
+      <span class="json-key">"current_page"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"per_page"</span>: <span class="json-number">20</span>,
+      <span class="json-key">"total_items"</span>: <span class="json-number">45</span>,
+      <span class="json-key">"total_pages"</span>: <span class="json-number">3</span>,
+      <span class="json-key">"has_next"</span>: <span class="json-boolean">true</span>,
+      <span class="json-key">"has_prev"</span>: <span class="json-boolean">false</span>
     }
   }
 }</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-box"></i> Структура объекта новости</div>
+                            <table class="param-table">
+                                <thead><tr><th>Поле</th><th>Тип</th><th>Описание</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">id</span></td><td><span class="param-type">integer</span></td><td class="param-desc">Уникальный идентификатор</td></tr>
+                                    <tr><td><span class="param-name">title</span></td><td><span class="param-type">string</span></td><td class="param-desc">Заголовок</td></tr>
+                                    <tr><td><span class="param-name">slug</span></td><td><span class="param-type">string</span></td><td class="param-desc">URL-идентификатор (транслит)</td></tr>
+                                    <tr><td><span class="param-name">excerpt</span></td><td><span class="param-type">string</span></td><td class="param-desc">Краткое описание</td></tr>
+                                    <tr><td><span class="param-name">category</span></td><td><span class="param-type">object</span></td><td class="param-desc"><code>key</code> — ключ категории, <code>name</code> — название</td></tr>
+                                    <tr><td><span class="param-name">image</span></td><td><span class="param-type">string|null</span></td><td class="param-desc">Абсолютный URL изображения или <code>null</code></td></tr>
+                                    <tr><td><span class="param-name">is_featured</span></td><td><span class="param-type">boolean</span></td><td class="param-desc">Важная новость (закреплена)</td></tr>
+                                    <tr><td><span class="param-name">views</span></td><td><span class="param-type">integer</span></td><td class="param-desc">Количество просмотров</td></tr>
+                                    <tr><td><span class="param-name">published_at</span></td><td><span class="param-type">string</span></td><td class="param-desc">Дата публикации <code>YYYY-MM-DD HH:MM:SS</code></td></tr>
+                                    <tr><td><span class="param-name">url</span></td><td><span class="param-type">string</span></td><td class="param-desc">Полный URL страницы новости</td></tr>
+                                    <tr><td><span class="param-name">author</span></td><td><span class="param-type">object</span></td><td class="param-desc"><code>username</code>, <code>name</code> (ФИО или <code>null</code>)</td></tr>
+                                    <tr><td><span class="param-name">content</span></td><td><span class="param-type">string</span></td><td class="param-desc"><em>Только в детальном ответе.</em> HTML-контент</td></tr>
+                                    <tr><td><span class="param-name">gallery</span></td><td><span class="param-type">array</span></td><td class="param-desc"><em>Только в детальном.</em> Массив <code>{id, url, caption}</code></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-exclamation-circle"></i> Ошибка (невалидная категория)</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--err">400 Bad Request</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">false</span>,
+  <span class="json-key">"error"</span>: {
+    <span class="json-key">"code"</span>: <span class="json-number">400</span>,
+    <span class="json-key">"message"</span>: <span class="json-string">"Недопустимая категория"</span>
+  }
+}</pre></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- GET /api/news/latest -->
-                <div class="api-endpoint" id="news-latest">
-                    <div class="endpoint-header">
-                        <span class="method get">GET</span>
-                        <span class="endpoint-path">/api/news/latest</span>
+                <div class="endpoint" id="news-latest">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/news/latest</span>
                     </div>
-                    <div class="endpoint-content">
-                        <p class="endpoint-description">Получить последние опубликованные новости (быстрый доступ без пагинации).</p>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Параметры запроса</h4>
-                            <table class="parameter-table">
-                                <thead>
-                                    <tr>
-                                        <th>Параметр</th>
-                                        <th>Тип</th>
-                                        <th>Описание</th>
-                                    </tr>
-                                </thead>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Быстрый доступ к последним опубликованным новостям без пагинации и фильтрации. Идеально для виджетов, Telegram-ботов и интеграций со сторонними сервисами. Возвращает плоский массив в <code>data</code>.</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-sliders"></i> Параметры запроса</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
                                 <tbody>
-                                    <tr>
-                                        <td><span class="parameter-name">limit</span></td>
-                                        <td><span class="parameter-type">integer</span></td>
-                                        <td>Количество новостей, 1-10 (по умолчанию: 5)</td>
-                                    </tr>
+                                    <tr><td><span class="param-name">limit</span></td><td><span class="param-type">integer</span></td><td class="param-desc">Количество новостей: 1–10. По умолчанию: <span class="param-default">5</span></td></tr>
                                 </tbody>
                             </table>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 200</h4>
-                            <div class="code-block code-json"><pre>{
-  "<span class="json-key">success</span>": <span class="json-boolean">true</span>,
-  "<span class="json-key">data</span>": [
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Пример запроса</div>
+                            <div class="curl-block">
+                                <span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news/latest?limit=3"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Пример ответа</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"data"</span>: [
     {
-      "<span class="json-key">id</span>": <span class="json-number">10</span>,
-      "<span class="json-key">title</span>": <span class="json-string">"Последняя новость"</span>,
-      "<span class="json-key">slug</span>": <span class="json-string">"poslednyaya-novost"</span>,
-      "<span class="json-key">excerpt</span>": <span class="json-string">"Краткое описание..."</span>,
-      "<span class="json-key">category</span>": { "<span class="json-key">key</span>": <span class="json-string">"city"</span>, "<span class="json-key">name</span>": <span class="json-string">"Город"</span> },
-      "<span class="json-key">image</span>": <span class="json-string">"https://bgdportal.ru/uploads/news/image.jpg"</span>,
-      "<span class="json-key">is_featured</span>": <span class="json-boolean">false</span>,
-      "<span class="json-key">views</span>": <span class="json-number">50</span>,
-      "<span class="json-key">published_at</span>": <span class="json-string">"2026-02-13 15:30:00"</span>,
-      "<span class="json-key">url</span>": <span class="json-string">"https://bgdportal.ru/news/poslednyaya-novost"</span>,
-      "<span class="json-key">author</span>": { "<span class="json-key">username</span>": <span class="json-string">"admin"</span>, "<span class="json-key">name</span>": <span class="json-string">"Иван Петров"</span> }
+      <span class="json-key">"id"</span>: <span class="json-number">50</span>,
+      <span class="json-key">"title"</span>: <span class="json-string">"Новый маршрут городского транспорта"</span>,
+      <span class="json-key">"slug"</span>: <span class="json-string">"novyj-marshrut-transporta"</span>,
+      <span class="json-key">"excerpt"</span>: <span class="json-string">"С 1 марта запускается маршрут №15..."</span>,
+      <span class="json-key">"category"</span>: { <span class="json-key">"key"</span>: <span class="json-string">"transport"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Транспорт"</span> },
+      <span class="json-key">"image"</span>: <span class="json-string">"https://bgdportal.ru/uploads/news/bus.jpg"</span>,
+      <span class="json-key">"is_featured"</span>: <span class="json-boolean">false</span>,
+      <span class="json-key">"views"</span>: <span class="json-number">78</span>,
+      <span class="json-key">"published_at"</span>: <span class="json-string">"2026-02-28 16:00:00"</span>,
+      <span class="json-key">"url"</span>: <span class="json-string">"https://bgdportal.ru/news/novyj-marshrut-transporta"</span>,
+      <span class="json-key">"author"</span>: { <span class="json-key">"username"</span>: <span class="json-string">"admin"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Иван Петров"</span> }
     }
   ]
 }</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="notes notes--success">
+                                <ul>
+                                    <li>Ответ — <strong>массив</strong> объектов в <code>data</code> (без <code>pagination</code>)</li>
+                                    <li>Структура объекта идентична элементу из <code>/api/news</code> (без <code>content</code> и <code>gallery</code>)</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- GET /api/news/featured -->
-                <div class="api-endpoint" id="news-featured">
-                    <div class="endpoint-header">
-                        <span class="method get">GET</span>
-                        <span class="endpoint-path">/api/news/featured</span>
+                <div class="endpoint" id="news-featured">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/news/featured</span>
                     </div>
-                    <div class="endpoint-content">
-                        <p class="endpoint-description">Получить важные (featured) новости.</p>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Параметры запроса</h4>
-                            <table class="parameter-table">
-                                <thead>
-                                    <tr>
-                                        <th>Параметр</th>
-                                        <th>Тип</th>
-                                        <th>Описание</th>
-                                    </tr>
-                                </thead>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Важные (featured) новости, отмеченные редакцией. Это закреплённые новости портала с флагом <code>is_featured = true</code>. Сортировка по дате (новые первыми). Возвращает плоский массив.</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-sliders"></i> Параметры запроса</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
                                 <tbody>
-                                    <tr>
-                                        <td><span class="parameter-name">limit</span></td>
-                                        <td><span class="parameter-type">integer</span></td>
-                                        <td>Количество новостей, 1-10 (по умолчанию: 5)</td>
-                                    </tr>
+                                    <tr><td><span class="param-name">limit</span></td><td><span class="param-type">integer</span></td><td class="param-desc">Количество новостей: 1–10. По умолчанию: <span class="param-default">5</span></td></tr>
                                 </tbody>
                             </table>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 200</h4>
-                            <div class="code-block code-json"><pre>{
-  "<span class="json-key">success</span>": <span class="json-boolean">true</span>,
-  "<span class="json-key">data</span>": [
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Пример запроса</div>
+                            <div class="curl-block">
+                                <span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news/featured?limit=2"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Пример ответа</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"data"</span>: [
     {
-      "<span class="json-key">id</span>": <span class="json-number">5</span>,
-      "<span class="json-key">title</span>": <span class="json-string">"Важная новость"</span>,
-      "<span class="json-key">slug</span>": <span class="json-string">"vazhnaya-novost"</span>,
-      "<span class="json-key">excerpt</span>": <span class="json-string">"Важное событие города..."</span>,
-      "<span class="json-key">category</span>": { "<span class="json-key">key</span>": <span class="json-string">"announcements"</span>, "<span class="json-key">name</span>": <span class="json-string">"Анонсы"</span> },
-      "<span class="json-key">image</span>": <span class="json-string">"https://bgdportal.ru/uploads/news/featured.jpg"</span>,
-      "<span class="json-key">is_featured</span>": <span class="json-boolean">true</span>,
-      "<span class="json-key">views</span>": <span class="json-number">500</span>,
-      "<span class="json-key">published_at</span>": <span class="json-string">"2026-02-12 10:00:00"</span>,
-      "<span class="json-key">url</span>": <span class="json-string">"https://bgdportal.ru/news/vazhnaya-novost"</span>,
-      "<span class="json-key">author</span>": { "<span class="json-key">username</span>": <span class="json-string">"admin"</span>, "<span class="json-key">name</span>": <span class="json-string">"Иван Петров"</span> }
+      <span class="json-key">"id"</span>: <span class="json-number">38</span>,
+      <span class="json-key">"title"</span>: <span class="json-string">"Важное объявление о графике работы МФЦ"</span>,
+      <span class="json-key">"slug"</span>: <span class="json-string">"grafik-raboty-mfc"</span>,
+      <span class="json-key">"excerpt"</span>: <span class="json-string">"В связи с праздничными днями МФЦ меняет график..."</span>,
+      <span class="json-key">"category"</span>: { <span class="json-key">"key"</span>: <span class="json-string">"announcements"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Анонсы"</span> },
+      <span class="json-key">"image"</span>: <span class="json-string">"https://bgdportal.ru/uploads/news/mfc.jpg"</span>,
+      <span class="json-key">"is_featured"</span>: <span class="json-boolean">true</span>,
+      <span class="json-key">"views"</span>: <span class="json-number">1250</span>,
+      <span class="json-key">"published_at"</span>: <span class="json-string">"2026-02-27 09:00:00"</span>,
+      <span class="json-key">"url"</span>: <span class="json-string">"https://bgdportal.ru/news/grafik-raboty-mfc"</span>,
+      <span class="json-key">"author"</span>: { <span class="json-key">"username"</span>: <span class="json-string">"admin"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Иван Петров"</span> }
     }
   ]
 }</pre></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- GET /api/news/categories -->
-                <div class="api-endpoint" id="news-categories">
-                    <div class="endpoint-header">
-                        <span class="method get">GET</span>
-                        <span class="endpoint-path">/api/news/categories</span>
+                <div class="endpoint" id="news-categories">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/news/categories</span>
                     </div>
-                    <div class="endpoint-content">
-                        <p class="endpoint-description">Получить список всех доступных категорий новостей.</p>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 200</h4>
-                            <div class="code-block code-json"><pre>{
-  "<span class="json-key">success</span>": <span class="json-boolean">true</span>,
-  "<span class="json-key">data</span>": [
-    { "<span class="json-key">key</span>": <span class="json-string">"city"</span>, "<span class="json-key">name</span>": <span class="json-string">"Город"</span>, "<span class="json-key">icon</span>": <span class="json-string">"building"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"society"</span>, "<span class="json-key">name</span>": <span class="json-string">"Общество"</span>, "<span class="json-key">icon</span>": <span class="json-string">"people"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"economy"</span>, "<span class="json-key">name</span>": <span class="json-string">"Экономика"</span>, "<span class="json-key">icon</span>": <span class="json-string">"graph-up-arrow"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"sport"</span>, "<span class="json-key">name</span>": <span class="json-string">"Спорт"</span>, "<span class="json-key">icon</span>": <span class="json-string">"trophy"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"culture"</span>, "<span class="json-key">name</span>": <span class="json-string">"Культура"</span>, "<span class="json-key">icon</span>": <span class="json-string">"palette"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"incidents"</span>, "<span class="json-key">name</span>": <span class="json-string">"Происшествия"</span>, "<span class="json-key">icon</span>": <span class="json-string">"exclamation-triangle"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"politics"</span>, "<span class="json-key">name</span>": <span class="json-string">"Политика"</span>, "<span class="json-key">icon</span>": <span class="json-string">"bank"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"health"</span>, "<span class="json-key">name</span>": <span class="json-string">"Здоровье"</span>, "<span class="json-key">icon</span>": <span class="json-string">"heart-pulse"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"updates"</span>, "<span class="json-key">name</span>": <span class="json-string">"Обновления"</span>, "<span class="json-key">icon</span>": <span class="json-string">"arrow-repeat"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"community"</span>, "<span class="json-key">name</span>": <span class="json-string">"Русская община"</span>, "<span class="json-key">icon</span>": <span class="json-string">"globe"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"technology"</span>, "<span class="json-key">name</span>": <span class="json-string">"Технологии"</span>, "<span class="json-key">icon</span>": <span class="json-string">"cpu"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"education"</span>, "<span class="json-key">name</span>": <span class="json-string">"Образование"</span>, "<span class="json-key">icon</span>": <span class="json-string">"mortarboard"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"ecology"</span>, "<span class="json-key">name</span>": <span class="json-string">"Экология"</span>, "<span class="json-key">icon</span>": <span class="json-string">"tree"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"transport"</span>, "<span class="json-key">name</span>": <span class="json-string">"Транспорт"</span>, "<span class="json-key">icon</span>": <span class="json-string">"car-front"</span> },
-    { "<span class="json-key">key</span>": <span class="json-string">"announcements"</span>, "<span class="json-key">name</span>": <span class="json-string">"Анонсы"</span>, "<span class="json-key">icon</span>": <span class="json-string">"megaphone"</span> }
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Полный список категорий новостей с ключами, русскими названиями и иконками Bootstrap Icons. Используйте значение <code>key</code> для фильтрации в <code>/api/news?category=...</code>. Порядок категорий фиксирован.</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Пример запроса</div>
+                            <div class="curl-block">
+                                <span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news/categories"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Ответ (все 15 категорий)</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"data"</span>: [
+    { <span class="json-key">"key"</span>: <span class="json-string">"city"</span>,          <span class="json-key">"name"</span>: <span class="json-string">"Город"</span>,             <span class="json-key">"icon"</span>: <span class="json-string">"building"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"society"</span>,       <span class="json-key">"name"</span>: <span class="json-string">"Общество"</span>,          <span class="json-key">"icon"</span>: <span class="json-string">"people"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"economy"</span>,       <span class="json-key">"name"</span>: <span class="json-string">"Экономика"</span>,         <span class="json-key">"icon"</span>: <span class="json-string">"graph-up-arrow"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"sport"</span>,         <span class="json-key">"name"</span>: <span class="json-string">"Спорт"</span>,             <span class="json-key">"icon"</span>: <span class="json-string">"trophy"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"culture"</span>,       <span class="json-key">"name"</span>: <span class="json-string">"Культура"</span>,          <span class="json-key">"icon"</span>: <span class="json-string">"palette"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"incidents"</span>,     <span class="json-key">"name"</span>: <span class="json-string">"Происшествия"</span>,     <span class="json-key">"icon"</span>: <span class="json-string">"exclamation-triangle"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"politics"</span>,      <span class="json-key">"name"</span>: <span class="json-string">"Политика"</span>,          <span class="json-key">"icon"</span>: <span class="json-string">"bank"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"health"</span>,        <span class="json-key">"name"</span>: <span class="json-string">"Здоровье"</span>,          <span class="json-key">"icon"</span>: <span class="json-string">"heart-pulse"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"updates"</span>,       <span class="json-key">"name"</span>: <span class="json-string">"Обновления"</span>,        <span class="json-key">"icon"</span>: <span class="json-string">"arrow-repeat"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"community"</span>,     <span class="json-key">"name"</span>: <span class="json-string">"Русская община"</span>,    <span class="json-key">"icon"</span>: <span class="json-string">"globe"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"technology"</span>,    <span class="json-key">"name"</span>: <span class="json-string">"Технологии"</span>,        <span class="json-key">"icon"</span>: <span class="json-string">"cpu"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"education"</span>,     <span class="json-key">"name"</span>: <span class="json-string">"Образование"</span>,       <span class="json-key">"icon"</span>: <span class="json-string">"mortarboard"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"ecology"</span>,       <span class="json-key">"name"</span>: <span class="json-string">"Экология"</span>,          <span class="json-key">"icon"</span>: <span class="json-string">"tree"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"transport"</span>,     <span class="json-key">"name"</span>: <span class="json-string">"Транспорт"</span>,         <span class="json-key">"icon"</span>: <span class="json-string">"car-front"</span> },
+    { <span class="json-key">"key"</span>: <span class="json-string">"announcements"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Анонсы"</span>,            <span class="json-key">"icon"</span>: <span class="json-string">"megaphone"</span> }
   ]
 }</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="notes">
+                                <ul>
+                                    <li><code>icon</code> — имя Bootstrap Icon <strong>без</strong> префикса <code>bi-</code>. Для использования: <code>&lt;i class="bi bi-{icon}"&gt;</code></li>
+                                    <li>Всего 15 категорий, список статичный</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- GET /api/news/slug/{slug} -->
-                <div class="api-endpoint" id="news-by-slug">
-                    <div class="endpoint-header">
-                        <span class="method get">GET</span>
-                        <span class="endpoint-path">/api/news/slug/{slug}</span>
+                <div class="endpoint" id="news-slug">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/news/slug/<span class="endpoint__path-param">{slug}</span></span>
                     </div>
-                    <div class="endpoint-content">
-                        <p class="endpoint-description">Получить полную информацию о новости по её slug (URL-идентификатору).</p>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Параметры пути</h4>
-                            <table class="parameter-table">
-                                <thead>
-                                    <tr>
-                                        <th>Параметр</th>
-                                        <th>Тип</th>
-                                        <th>Описание</th>
-                                    </tr>
-                                </thead>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Полная информация о новости по URL-идентификатору (slug). В отличие от списка, включает полный HTML-контент (<code>content</code>) и галерею изображений (<code>gallery</code>). Возвращает 404 если новость не найдена или не опубликована.</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-signpost-split"></i> Параметры пути</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
                                 <tbody>
-                                    <tr>
-                                        <td><span class="parameter-name">slug</span></td>
-                                        <td><span class="parameter-type">string</span></td>
-                                        <td>URL-идентификатор новости</td>
-                                    </tr>
+                                    <tr><td><span class="param-name">slug</span> <span class="param-required">*</span></td><td><span class="param-type">string</span></td><td class="param-desc">URL-идентификатор новости (транслитерированный заголовок, напр. <code>otkrytie-novogo-parka</code>)</td></tr>
                                 </tbody>
                             </table>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 200</h4>
-                            <div class="code-block code-json"><pre>{
-  "<span class="json-key">success</span>": <span class="json-boolean">true</span>,
-  "<span class="json-key">data</span>": {
-    "<span class="json-key">id</span>": <span class="json-number">1</span>,
-    "<span class="json-key">title</span>": <span class="json-string">"Заголовок новости"</span>,
-    "<span class="json-key">slug</span>": <span class="json-string">"zagolovok-novosti"</span>,
-    "<span class="json-key">excerpt</span>": <span class="json-string">"Краткое описание..."</span>,
-    "<span class="json-key">content</span>": <span class="json-string">"&lt;p&gt;Полный HTML контент новости...&lt;/p&gt;"</span>,
-    "<span class="json-key">category</span>": { "<span class="json-key">key</span>": <span class="json-string">"city"</span>, "<span class="json-key">name</span>": <span class="json-string">"Город"</span> },
-    "<span class="json-key">image</span>": <span class="json-string">"https://bgdportal.ru/uploads/news/image.jpg"</span>,
-    "<span class="json-key">is_featured</span>": <span class="json-boolean">false</span>,
-    "<span class="json-key">views</span>": <span class="json-number">150</span>,
-    "<span class="json-key">published_at</span>": <span class="json-string">"2026-02-13 12:00:00"</span>,
-    "<span class="json-key">url</span>": <span class="json-string">"https://bgdportal.ru/news/zagolovok-novosti"</span>,
-    "<span class="json-key">author</span>": {
-      "<span class="json-key">username</span>": <span class="json-string">"admin"</span>,
-      "<span class="json-key">name</span>": <span class="json-string">"Иван Петров"</span>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Пример запроса</div>
+                            <div class="curl-block">
+                                <span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news/slug/otkrytie-novogo-parka"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Пример ответа</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-number">42</span>,
+    <span class="json-key">"title"</span>: <span class="json-string">"Открытие нового парка в Богдановиче"</span>,
+    <span class="json-key">"slug"</span>: <span class="json-string">"otkrytie-novogo-parka"</span>,
+    <span class="json-key">"excerpt"</span>: <span class="json-string">"В центре города открылся современный парк..."</span>,
+    <span class="json-key">"content"</span>: <span class="json-string">"&lt;p&gt;Полный HTML контент новости с &lt;strong&gt;форматированием&lt;/strong&gt;...&lt;/p&gt;"</span>,
+    <span class="json-key">"category"</span>: { <span class="json-key">"key"</span>: <span class="json-string">"city"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Город"</span> },
+    <span class="json-key">"image"</span>: <span class="json-string">"https://bgdportal.ru/uploads/news/park.jpg"</span>,
+    <span class="json-key">"is_featured"</span>: <span class="json-boolean">false</span>,
+    <span class="json-key">"views"</span>: <span class="json-number">342</span>,
+    <span class="json-key">"published_at"</span>: <span class="json-string">"2026-02-28 10:00:00"</span>,
+    <span class="json-key">"url"</span>: <span class="json-string">"https://bgdportal.ru/news/otkrytie-novogo-parka"</span>,
+    <span class="json-key">"author"</span>: {
+      <span class="json-key">"username"</span>: <span class="json-string">"admin"</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Иван Петров"</span>
     },
-    "<span class="json-key">gallery</span>": [
+    <span class="json-key">"gallery"</span>: [
       {
-        "<span class="json-key">id</span>": <span class="json-number">1</span>,
-        "<span class="json-key">url</span>": <span class="json-string">"https://bgdportal.ru/uploads/news/gallery1.jpg"</span>,
-        "<span class="json-key">caption</span>": <span class="json-string">"Описание изображения"</span>
+        <span class="json-key">"id"</span>: <span class="json-number">1</span>,
+        <span class="json-key">"url"</span>: <span class="json-string">"https://bgdportal.ru/uploads/news/gallery1.jpg"</span>,
+        <span class="json-key">"caption"</span>: <span class="json-string">"Вид на фонтан"</span>
+      },
+      {
+        <span class="json-key">"id"</span>: <span class="json-number">2</span>,
+        <span class="json-key">"url"</span>: <span class="json-string">"https://bgdportal.ru/uploads/news/gallery2.jpg"</span>,
+        <span class="json-key">"caption"</span>: <span class="json-null">null</span>
       }
     ]
   }
 }</pre></div>
+                            </div>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 404</h4>
-                            <div class="code-block code-json"><pre>{
-  "<span class="json-key">success</span>": <span class="json-boolean">false</span>,
-  "<span class="json-key">error</span>": {
-    "<span class="json-key">code</span>": <span class="json-number">404</span>,
-    "<span class="json-key">message</span>": <span class="json-string">"Новость не найдена"</span>
-  }
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-exclamation-circle"></i> Ошибка</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--err">404 Not Found</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">false</span>,
+  <span class="json-key">"error"</span>: { <span class="json-key">"code"</span>: <span class="json-number">404</span>, <span class="json-key">"message"</span>: <span class="json-string">"Новость не найдена"</span> }
 }</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="notes notes--warn">
+                                <ul>
+                                    <li>Неопубликованные новости (статус <code>draft</code> / <code>archived</code>) также вернут 404</li>
+                                    <li>Поле <code>content</code> содержит HTML — при рендеринге используйте санитизацию</li>
+                                    <li>Галерея может быть пустым массивом, если у новости нет доп. изображений</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- GET /api/news/{id} -->
-                <div class="api-endpoint" id="news-by-id">
-                    <div class="endpoint-header">
-                        <span class="method get">GET</span>
-                        <span class="endpoint-path">/api/news/{id}</span>
+                <div class="endpoint" id="news-id">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/news/<span class="endpoint__path-param">{id}</span></span>
                     </div>
-                    <div class="endpoint-content">
-                        <p class="endpoint-description">Получить полную информацию о новости по её ID.</p>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Параметры пути</h4>
-                            <table class="parameter-table">
-                                <thead>
-                                    <tr>
-                                        <th>Параметр</th>
-                                        <th>Тип</th>
-                                        <th>Описание</th>
-                                    </tr>
-                                </thead>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Полная информация о новости по числовому ID. Ответ идентичен <a href="#news-slug" style="color:var(--accent-blue)">/api/news/slug/{slug}</a> — включает <code>content</code> и <code>gallery</code>. Удобно когда ID уже известен из списочных API.</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-signpost-split"></i> Параметры пути</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">id</span> <span class="param-required">*</span></td><td><span class="param-type">integer</span></td><td class="param-desc">Числовой идентификатор новости</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Пример запроса</div>
+                            <div class="curl-block">
+                                <span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/news/42"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Пример ответа</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-number">42</span>,
+    <span class="json-key">"title"</span>: <span class="json-string">"Открытие нового парка в Богдановиче"</span>,
+    <span class="json-key">"slug"</span>: <span class="json-string">"otkrytie-novogo-parka"</span>,
+    <span class="json-key">"excerpt"</span>: <span class="json-string">"В центре города открылся современный парк..."</span>,
+    <span class="json-key">"content"</span>: <span class="json-string">"&lt;p&gt;Полный HTML контент...&lt;/p&gt;"</span>,
+    <span class="json-key">"category"</span>: { <span class="json-key">"key"</span>: <span class="json-string">"city"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Город"</span> },
+    <span class="json-key">"image"</span>: <span class="json-string">"https://bgdportal.ru/uploads/news/park.jpg"</span>,
+    <span class="json-key">"is_featured"</span>: <span class="json-boolean">false</span>,
+    <span class="json-key">"views"</span>: <span class="json-number">342</span>,
+    <span class="json-key">"published_at"</span>: <span class="json-string">"2026-02-28 10:00:00"</span>,
+    <span class="json-key">"url"</span>: <span class="json-string">"https://bgdportal.ru/news/otkrytie-novogo-parka"</span>,
+    <span class="json-key">"author"</span>: { <span class="json-key">"username"</span>: <span class="json-string">"admin"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Иван Петров"</span> },
+    <span class="json-key">"gallery"</span>: []
+  }
+}</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-exclamation-circle"></i> Ошибка</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--err">404 Not Found</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">false</span>,
+  <span class="json-key">"error"</span>: { <span class="json-key">"code"</span>: <span class="json-number">404</span>, <span class="json-key">"message"</span>: <span class="json-string">"Новость не найдена"</span> }
+}</pre></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════════ ГОРОСКОП ════════════════ -->
+            <section class="api-section">
+                <div class="section-heading">
+                    <div class="section-heading__icon section-heading__icon--horoscope"><i class="bi bi-stars"></i></div>
+                    <h2 class="section-heading__title">Гороскоп</h2>
+                    <span class="section-heading__count">1 эндпоинт</span>
+                </div>
+
+                <div class="endpoint" id="horoscope">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/horoscope/<span class="endpoint__path-param">{sign}</span></span>
+                    </div>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Гороскоп для указанного знака зодиака. Данные получаются из внешнего источника (ignio.com) и кешируются на 3–24 часа в зависимости от периода. Если API источника недоступен — возвращается текст из кеша.</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-signpost-split"></i> Параметры пути</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
                                 <tbody>
                                     <tr>
-                                        <td><span class="parameter-name">id</span></td>
-                                        <td><span class="parameter-type">integer</span></td>
-                                        <td>ID новости</td>
+                                        <td><span class="param-name">sign</span> <span class="param-required">*</span></td>
+                                        <td><span class="param-type">string</span></td>
+                                        <td class="param-desc">Знак зодиака (англ.). Допустимые значения:
+                                            <div class="values-list">
+                                                <span class="values-list__item">aries</span>
+                                                <span class="values-list__item">taurus</span>
+                                                <span class="values-list__item">gemini</span>
+                                                <span class="values-list__item">cancer</span>
+                                                <span class="values-list__item">leo</span>
+                                                <span class="values-list__item">virgo</span>
+                                                <span class="values-list__item">libra</span>
+                                                <span class="values-list__item">scorpio</span>
+                                                <span class="values-list__item">sagittarius</span>
+                                                <span class="values-list__item">capricorn</span>
+                                                <span class="values-list__item">aquarius</span>
+                                                <span class="values-list__item">pisces</span>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 200</h4>
-                            <div class="code-block code-json"><pre>{
-  "<span class="json-key">success</span>": <span class="json-boolean">true</span>,
-  "<span class="json-key">data</span>": {
-    "<span class="json-key">id</span>": <span class="json-number">1</span>,
-    "<span class="json-key">title</span>": <span class="json-string">"Заголовок новости"</span>,
-    "<span class="json-key">slug</span>": <span class="json-string">"zagolovok-novosti"</span>,
-    "<span class="json-key">excerpt</span>": <span class="json-string">"Краткое описание..."</span>,
-    "<span class="json-key">content</span>": <span class="json-string">"&lt;p&gt;Полный HTML контент новости...&lt;/p&gt;"</span>,
-    "<span class="json-key">category</span>": { "<span class="json-key">key</span>": <span class="json-string">"city"</span>, "<span class="json-key">name</span>": <span class="json-string">"Город"</span> },
-    "<span class="json-key">image</span>": <span class="json-string">"https://bgdportal.ru/uploads/news/image.jpg"</span>,
-    "<span class="json-key">is_featured</span>": <span class="json-boolean">false</span>,
-    "<span class="json-key">views</span>": <span class="json-number">150</span>,
-    "<span class="json-key">published_at</span>": <span class="json-string">"2026-02-13 12:00:00"</span>,
-    "<span class="json-key">url</span>": <span class="json-string">"https://bgdportal.ru/news/zagolovok-novosti"</span>,
-    "<span class="json-key">author</span>": {
-      "<span class="json-key">username</span>": <span class="json-string">"admin"</span>,
-      "<span class="json-key">name</span>": <span class="json-string">"Иван Петров"</span>
-    },
-    "<span class="json-key">gallery</span>": []
-  }
-}</pre></div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-sliders"></i> Параметры запроса</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="param-name">period</span></td>
+                                        <td><span class="param-type">string</span></td>
+                                        <td class="param-desc">Период прогноза. По умолчанию: <span class="param-default">today</span>
+                                            <div class="values-list">
+                                                <span class="values-list__item">today</span>
+                                                <span class="values-list__item">tomorrow</span>
+                                                <span class="values-list__item">week</span>
+                                                <span class="values-list__item">month</span>
+                                                <span class="values-list__item">year</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        
-                        <div class="content-section">
-                            <h4 class="section-title">Ответ 404</h4>
-                            <div class="code-block code-json"><pre>{
-  "<span class="json-key">success</span>": <span class="json-boolean">false</span>,
-  "<span class="json-key">error</span>": {
-    "<span class="json-key">code</span>": <span class="json-number">404</span>,
-    "<span class="json-key">message</span>": <span class="json-string">"Новость не найдена"</span>
-  }
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-clock-history"></i> Время кеширования</div>
+                            <table class="param-table">
+                                <thead><tr><th>Период</th><th>TTL кеша</th><th>Описание</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">today</span></td><td>3 часа</td><td class="param-desc">Прогноз на сегодня</td></tr>
+                                    <tr><td><span class="param-name">tomorrow</span></td><td>3 часа</td><td class="param-desc">Прогноз на завтра</td></tr>
+                                    <tr><td><span class="param-name">week</span></td><td>6 часов</td><td class="param-desc">Прогноз на неделю</td></tr>
+                                    <tr><td><span class="param-name">month</span></td><td>12 часов</td><td class="param-desc">Прогноз на месяц</td></tr>
+                                    <tr><td><span class="param-name">year</span></td><td>24 часа</td><td class="param-desc">Прогноз на год</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Примеры запросов</div>
+                            <div class="curl-block">
+<span class="json-comment"># Гороскоп для Овна на сегодня</span>
+<span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/horoscope/aries"</span>
+
+<span class="json-comment"># Гороскоп для Рыб на неделю</span>
+<span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/horoscope/pisces?period=week"</span>
+
+<span class="json-comment"># Годовой прогноз для Льва</span>
+<span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/horoscope/leo?period=year"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Пример ответа</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"sign"</span>: <span class="json-string">"aries"</span>,
+  <span class="json-key">"name"</span>: <span class="json-string">"Овен"</span>,
+  <span class="json-key">"period"</span>: <span class="json-string">"today"</span>,
+  <span class="json-key">"text"</span>: <span class="json-string">"Сегодня звёзды благоприятствуют новым начинаниям. Отличный день для важных переговоров и принятия решений. Обратите внимание на здоровье — больше отдыхайте."</span>,
+  <span class="json-key">"date"</span>: <span class="json-string">"28.02.2026"</span>
 }</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-exclamation-circle"></i> Ошибка</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--err">200</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Неизвестный знак зодиака"</span>
+}</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="notes notes--warn">
+                                <ul>
+                                    <li>В отличие от других API, гороскоп <strong>не оборачивает</strong> данные в <code>success</code>/<code>data</code></li>
+                                    <li>При невалидном <code>period</code> автоматически используется <code>today</code> (без ошибки)</li>
+                                    <li>Дата возвращается в формате <code>DD.MM.YYYY</code> (отличается от новостей)</li>
+                                    <li>При недоступности источника <code>text</code> будет: <code>"Гороскоп временно недоступен."</code></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-table"></i> Справочник знаков</div>
+                            <table class="param-table">
+                                <thead><tr><th>Ключ</th><th>Название</th><th>Даты</th><th>Стихия</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">aries</span></td><td>Овен</td><td>21 мар — 19 апр</td><td>Огонь</td></tr>
+                                    <tr><td><span class="param-name">taurus</span></td><td>Телец</td><td>20 апр — 20 мая</td><td>Земля</td></tr>
+                                    <tr><td><span class="param-name">gemini</span></td><td>Близнецы</td><td>21 мая — 20 июн</td><td>Воздух</td></tr>
+                                    <tr><td><span class="param-name">cancer</span></td><td>Рак</td><td>21 июн — 22 июл</td><td>Вода</td></tr>
+                                    <tr><td><span class="param-name">leo</span></td><td>Лев</td><td>23 июл — 22 авг</td><td>Огонь</td></tr>
+                                    <tr><td><span class="param-name">virgo</span></td><td>Дева</td><td>23 авг — 22 сен</td><td>Земля</td></tr>
+                                    <tr><td><span class="param-name">libra</span></td><td>Весы</td><td>23 сен — 22 окт</td><td>Воздух</td></tr>
+                                    <tr><td><span class="param-name">scorpio</span></td><td>Скорпион</td><td>23 окт — 21 ноя</td><td>Вода</td></tr>
+                                    <tr><td><span class="param-name">sagittarius</span></td><td>Стрелец</td><td>22 ноя — 21 дек</td><td>Огонь</td></tr>
+                                    <tr><td><span class="param-name">capricorn</span></td><td>Козерог</td><td>22 дек — 19 янв</td><td>Земля</td></tr>
+                                    <tr><td><span class="param-name">aquarius</span></td><td>Водолей</td><td>20 янв — 18 фев</td><td>Воздух</td></tr>
+                                    <tr><td><span class="param-name">pisces</span></td><td>Рыбы</td><td>19 фев — 20 мар</td><td>Вода</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                
             </section>
+
+            <!-- ════════════════ ОБЪЯВЛЕНИЯ ════════════════ -->
+            <section class="api-section">
+                <div class="section-heading">
+                    <div class="section-heading__icon section-heading__icon--listings"><i class="bi bi-grid-3x3-gap"></i></div>
+                    <h2 class="section-heading__title">Объявления</h2>
+                    <span class="section-heading__count">1 эндпоинт</span>
+                </div>
+
+                <div class="endpoint" id="subcategories">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/subcategories/<span class="endpoint__path-param">{categoryId}</span></span>
+                    </div>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Получить список подкатегорий для указанной родительской категории объявлений. Используется для динамической загрузки выпадающего списка подкатегорий при создании или фильтрации объявлений (AJAX).</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-signpost-split"></i> Параметры пути</div>
+                            <table class="param-table">
+                                <thead><tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">categoryId</span> <span class="param-required">*</span></td><td><span class="param-type">integer</span></td><td class="param-desc">ID родительской категории объявлений</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Пример запроса</div>
+                            <div class="curl-block">
+<span class="json-comment"># Подкатегории для категории id=1 (например, «Недвижимость»)</span>
+<span class="curl-cmd">curl</span> <span class="curl-url">"https://bgdportal.ru/api/subcategories/1"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Пример ответа</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"subcategories"</span>: [
+    {
+      <span class="json-key">"id"</span>: <span class="json-number">5</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Квартиры"</span>,
+      <span class="json-key">"slug"</span>: <span class="json-string">"kvartiry"</span>
+    },
+    {
+      <span class="json-key">"id"</span>: <span class="json-number">6</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Дома"</span>,
+      <span class="json-key">"slug"</span>: <span class="json-string">"doma"</span>
+    },
+    {
+      <span class="json-key">"id"</span>: <span class="json-number">7</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Земельные участки"</span>,
+      <span class="json-key">"slug"</span>: <span class="json-string">"zemelnye-uchastki"</span>
+    }
+  ]
+}</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="notes">
+                                <ul>
+                                    <li>Данные в поле <code>subcategories</code> (не <code>data</code> — отличается от новостных API)</li>
+                                    <li>Если категория не имеет подкатегорий — возвращается пустой массив</li>
+                                    <li>Возвращает только активные подкатегории</li>
+                                    <li>Каждая подкатегория: <code>id</code>, <code>name</code> (название), <code>slug</code> (URL-идентификатор)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════════ ЧАТЫ ════════════════ -->
+            <section class="api-section">
+                <div class="section-heading">
+                    <div class="section-heading__icon section-heading__icon--chat"><i class="bi bi-chat-dots"></i></div>
+                    <h2 class="section-heading__title">Чаты</h2>
+                    <span class="section-heading__count">1 эндпоинт</span>
+                </div>
+
+                <div class="endpoint" id="chats-unread">
+                    <div class="endpoint__head">
+                        <span class="endpoint__method get">GET</span>
+                        <span class="endpoint__path">/api/chats/unread</span>
+                        <span class="endpoint__auth"><i class="bi bi-lock-fill"></i> AUTH</span>
+                    </div>
+                    <div class="endpoint__body">
+                        <p class="endpoint__desc">Получить количество непрочитанных сообщений в чатах текущего пользователя. Используется для отображения бейджа непрочитанных в шапке сайта. Аутентификация через сессионный cookie. Без активной сессии возвращает <code>count: 0</code> (без ошибки).</p>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-terminal"></i> Пример запроса</div>
+                            <div class="curl-block">
+<span class="json-comment"># С куками сессии (из браузера)</span>
+<span class="curl-cmd">curl</span> -b "PHPSESSID=abc123" <span class="curl-url">"https://bgdportal.ru/api/chats/unread"</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Ответ (авторизован)</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--ok">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"count"</span>: <span class="json-number">3</span>
+}</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="block__title"><i class="bi bi-code-slash"></i> Ответ (без авторизации)</div>
+                            <div class="code">
+                                <div class="code__header"><span class="code__label">Response</span><span class="code__status code__status--warn">200 OK</span></div>
+                                <div class="code__body"><pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"count"</span>: <span class="json-number">0</span>
+}</pre></div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="notes notes--warn">
+                                <ul>
+                                    <li>Данные в поле <code>count</code> (не <code>data</code> — отличается от других API)</li>
+                                    <li>Всегда возвращает 200 — даже без авторизации (просто <code>count: 0</code>)</li>
+                                    <li>Аутентификация через cookie <code>PHPSESSID</code>, API-ключи не поддерживаются</li>
+                                    <li>На сайте запрашивается периодически через JavaScript (polling каждые 30 сек)</li>
+                                    <li>Используется для бейджа <span style="display:inline-block;background:var(--accent-red);color:white;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;vertical-align:middle;">3</span> в шапке рядом с иконкой чатов</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="doc-footer">
+                <span class="doc-footer__text">bgdportal.ru API &middot; 10 эндпоинтов &middot; v1.3 &middot; Обновлено 28.02.2026</span>
+                <a href="/" class="doc-footer__brand"><i class="bi bi-globe2"></i> bgdportal.ru</a>
+            </div>
         </main>
-        
-        <footer class="footer">
-            <p>Последнее обновление: 23 февраля 2026 г.</p>
-            <p>Версия документации: 1.2</p>
-        </footer>
     </div>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('open');
+        }
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.sidebar-nav__item a').forEach(a => a.classList.remove('active'));
+                    const link = document.querySelector('.sidebar-nav__item a[href="#' + entry.target.id + '"]');
+                    if (link) link.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+
+        document.querySelectorAll('[id]').forEach(el => {
+            if (el.closest('.endpoint') || el.matches('#overview, #authentication, #errors')) {
+                observer.observe(el);
+            }
+        });
+
+        document.querySelectorAll('.sidebar-nav__item a').forEach(a => {
+            a.addEventListener('click', () => {
+                if (window.innerWidth <= 980) toggleSidebar();
+            });
+        });
+    </script>
 </body>
 </html>
